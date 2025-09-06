@@ -14,7 +14,7 @@ Testing the endpoint with the following POST content.
 
 ``` json
 {
-    "title":  "plORMbing your Django ORM"
+    "firstName" : "Robert"
 }
 ```
 
@@ -23,8 +23,8 @@ Testing the endpoint with the following POST content.
 ``` json
 [
     {
-        "title": "plORMbing your Django ORM",
-        "body": "Part one of a series about ORM Leak vulnerabilities and attacking the Django ORM to leak sensitive data by Alex Brown."
+        "firstName": "Robert",
+        "lastName": "Smith"
     }
 ]
 ```
@@ -33,7 +33,7 @@ Testing the endpoint with the following POST content.
 
 ``` json
 {
-    "created_by__user__password__startswith": "p"
+    "manager__user__password__startswith": "p"
 }
 ```
 
@@ -42,8 +42,8 @@ Testing the endpoint with the following POST content.
 ``` json
 [
     {
-        "title": "plORMbing your Django ORM",
-        "body": "Part one of a series about ORM Leak vulnerabilities and attacking the Django ORM to leak sensitive data by Alex Brown."
+        "firstName": "Alice",
+        "lastName": "Smith"
     }
 ]
 ```
@@ -52,7 +52,7 @@ Why?
 
 Internally Django, by default stores a password hash that may look like this: `pbkdf2_sha256$26000...`
 
-The query we provided `created_by__user__password__startswith` allows us to match, one character at a time, the stored password hash for the author of this article.[^1]
+The query we provided `manager__user__password__startswith` allows us to match, one character at a time, the stored password hash for the manager for this employee. As long as Alice remains in our response set, we know our password guess was correct.[^1]
 
 # Challenge
 

@@ -3,11 +3,11 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-      "username": "alexbrown",
-      "password": "pbkdf2_sha256$260000$P820R1D14K5H$i5xK6ZtW9O2M3E4V5L6J7C8S9Q0A1X2B3F4G5H6I7J8K9L0M1N2O3P4Q5R6S7T8U9V0W1X2Y3Z4=",
-      "email": "alex.brown@example.com",
-      "first_name": "Alex",
-      "last_name": "Brown",
+      "username": "bobsmith",
+        "password": "pbkdf2_sha256$260000$Wv9D1E2C3A5B$M8N7B6V5C4X3Z2L1K0J9H8G7F6D5S4A3Q2W1E0R9T8Y7U6I5O4P3L2K1J0H9G8F7D6S5A4Q3W2E1R0T9Y8U7I6O5P4=",
+      "email": "bob.smith@example.com",
+      "first_name": "Robert",
+      "last_name": "Smith",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
@@ -18,42 +18,41 @@
     }
   },
   {
-    "model": "program.author",
-    "pk": 1,
-    "fields": {
-      "user": 1,
-      "departments": []
-    }
-  },
-  {
-    "model": "program.category",
-    "pk": 1,
-    "fields": {
-      "name": "Security"
-    }
-  },
-  {
-    "model": "program.category",
+    "model": "auth.user",
     "pk": 2,
     "fields": {
-      "name": "Programming"
+      "username": "alicesmith",
+        "password": "pbkdf2_sha256$260000$Zp7X5C3V1B9N$S8D7F6G5H4J3K2L1M0N9B8V7C6X5Z4A3Q2W1E0R9T8Y7U6I5O4P3L2K1J0H9G8F7D6S5A4Q3W2E1R0T9Y8U7I6O5P4=",
+      "email": "alice.smith@example.com",
+      "first_name": "alice",
+      "last_name": "Smith",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T10:00:00Z",
+      "last_login": "2024-01-01T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
-    "model": "program.category",
-    "pk": 3,
-    "fields": {
-      "name": "Web Development"
-    }
+      "model": "program.employee",
+      "pk": 1,
+      "fields": {
+          "firstName": "Robert",
+          "lastName" : "Smith",
+          "manager" : null,
+          "user": 1
+      }
   },
   {
-    "model": "program.article",
-    "pk": 1,
-    "fields": {
-      "title": "plORMbing your Django ORM",
-      "body": "Part one of a series about ORM Leak vulnerabilities and attacking the Django ORM to leak sensitive data by Alex Brown.",
-      "categories": [1, 2, 3],
-      "created_by": 1
-    }
+      "model": "program.employee",
+      "pk": 2,
+      "fields": {
+          "firstName": "Alice",
+          "lastName" : "Smith",
+          "manager" : 1,
+          "user": 2
+      }
   }
 ]
