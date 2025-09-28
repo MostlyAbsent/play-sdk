@@ -1,10 +1,16 @@
 # Challenge Background
 
-<!-- TODO: Reference the article. Explain the issue. -->
+An introduction to vulnerabilities induced by Django ORM misuse.
 
-<!-- TODO: Add references or requirement for POST and JSON data on the wire -->
+Prerequisites: Http POST, JSON data over the wire 
 
-<!-- TODO: Should I explain the unpack operator is the problem? I think that would be too easy. -->
+# Setup
+
+``` shell
+make run
+```
+
+Launches a webserver on [http://localhost:8080/], in your browser navigate to [http:localhost:8080/employee] to begin the challenge.
 
 # Example Payloads 
 
@@ -52,11 +58,11 @@ Why?
 
 Internally Django, by default stores a password hash that may look like this: `pbkdf2_sha256$26000...`
 
-The query we provided `manager__user__password__startswith` allows us to match, one character at a time, the stored password hash for the manager for this employee. As long as Alice remains in our response set, we know our password guess was correct.[^1]
+The query we provided `manager__user__password__startswith` allows us to match, one character at a time, the stored password hash for the manager for this employee. Traversing along the databases relations `employee -> manager -> user -> password` to fetch secured information. As long as Alice remains in our response set, we know our password guess was correct.[^1]
 
 # Challenge
 
-Mitigate this vulnerability.
+Your Challenge is to mitigate this vulnerability while leaving searching for employees by name working normally.
 
 # Footnotes
 
