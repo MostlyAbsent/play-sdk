@@ -10,7 +10,8 @@ Prerequisites: Http POST, JSON data over the wire
 make run
 ```
 
-Launches a webserver on [http://localhost:8080/], in your browser navigate to [http:localhost:8080/employee] to begin the challenge.
+Launches a webserver on [http://localhost:8080/], in your browser
+navigate to [http:localhost:8080/employee] to begin the challenge.
 
 # Example Payloads 
 
@@ -19,9 +20,13 @@ Launches a webserver on [http://localhost:8080/], in your browser navigate to [h
 Testing the endpoint with the following POST content.
 
 ``` json
-{
-    "firstName" : "Robert"
-}
+{ "firstName" : "Robert" }
+```
+
+Or
+
+``` json
+{ "firstName__contains" : "rob" }
 ```
 
 ### Expected Output
@@ -38,9 +43,7 @@ Testing the endpoint with the following POST content.
 ## Testing Malicious Input
 
 ``` json
-{
-    "manager__user__password__startswith": "p"
-}
+{ "manager__user__password__startswith": "p" }
 ```
 
 ### Expected Output

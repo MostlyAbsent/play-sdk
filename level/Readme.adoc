@@ -1,15 +1,20 @@
-= Your Level Title
+= Django ORM Traversal Vulnerability
 :level: trivial, easy, medium, hard
-:tags: comma, separate, tags, here, python
-:author: your name and email here
+:tags: python, django, sql, json
+:author: j j@just-the.tips
 
-//Add a story or security incident here
-//Include any useful hint
+Usage of an ORM is a generally accepted best practise for more easily
+and more securely accessing a database from your program. However,
+there are trade-offs in all things. The Django ORM provides ubiquitous
+creature comforts for python web developer, in this challenge you will
+see how it's misuse can expose your data to attackers.
 
 == Pre-requisites
 
-//If any pre-requisites for this challenge describe here
-//You must first complete a Star Here/easy/medium/hard level.
+- Some working knowledge of Django and Python would be advantageous.
+- Some Relational Database concepts would be useful, specifically
+  cross table relations.
+- The API receives and responds using JSON strings.
 
 == Troubleshooting
 
