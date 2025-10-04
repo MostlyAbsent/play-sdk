@@ -1,5 +1,6 @@
 import json
 from django.views import View
+from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
 from ..models.employee import Employee
 
@@ -31,3 +32,6 @@ class EmployeeView(View):
             print(e)
             return JsonResponse([], status=500, safe=False)
         return JsonResponse(serialized_data, safe=False)
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        return render(request, "employee_form.html")

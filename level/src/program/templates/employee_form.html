@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Search API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
+        h1 { color: #333; }
+        form { margin-top: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        #response-container { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        #response-output { background-color: #e9e9e9; padding: 10px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Search API</h1>
+        <p>Enter criteria to search for employees.</p>
+
+        <form id="employee-search-form">
+            <label for="request">Request:</label>
+            <input type="text" id="request" name="request">
+
+            <button type="submit">Search Employees</button>
+        </form>
+
+        <div id="response-container">
+            <h2>API Response:</h2>
+            <pre id="response-output">Awaiting search...</pre>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('employee-search-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const request = document.getElementById('request').value.trim();
+            const responseOutput = document.getElementById('response-output');
+            let payload;
+
+            try {
+                payload = JSON.parse(request);
+                if (typeof payload !== 'object' || payload === null) {
+                    throw new Error();
+                }
+            } catch (e) {
+                responseOutput.textContent = "Invalid Json input.";
+                responseOutput.classList.add("error");
+                return;
+            }
+
+            if (Object.keys(payload).length === 0) {
+                 responseOutput.textContent = "Enter a valid json string.";
+                 responseOutput.classList.add('error');
+                 return;
+            }
+
+            try {
+                const response = await fetch('/employee/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseOutput.textContent = JSON.stringify(data, null, 2);
+                    responseOutput.classList.remove('error');
+                } else {
+                    responseOutput.textContent = `Error ${response.status}: ${JSON.stringify(data, null, 2)}`;
+                    responseOutput.classList.add('error');
+                }
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                responseOutput.textContent = `Network error: ${error.message}`;
+                responseOutput.classList.add('error');
+            }
+        });
+
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
