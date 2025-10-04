@@ -1,21 +1,33 @@
-from rest_framework.views import APIView
-from rest_framework.request import Request
-from rest_framework.response import Response
+import json
+from django.views import View
+from django.http import JsonResponse, HttpRequest
 from ..models.employee import Employee
-from ..serializers.employee import EmployeeSerializer
 
-class EmployeeView(APIView):
+class EmployeeView(View):
     """
-        Some basic API view that users send requests to for
-        searching for employees
+    A vulnerable endpoint that responds to JSON formatted queries for
+    users of the system.
     """
-    def post(self, request: Request, format=None):
+    def post(self, request: HttpRequest, *args, **kwargs):
         print(f"--- EmployeeView POST received ---")
+
         try:
-            employees = Employee.objects.filter(**request.data)
+            request_data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "Invalid JSON in request body"}, status = 400
+            )
+        except Exception as e:
+            print(f"Error parsing request body: {e}")
+            return JsonResponse(
+                {"error": "Bad Request"}, status = 400
+            )
+
+        try:
+            employees = Employee.objects.filter(**request_data)
             print(f"Queryset count: {employees.count()}")
-            serializer = EmployeeSerializer(employees, many=True)
+            serialized_data =[employee.to_dict() for employee in employees]
         except Exception as e:
             print(e)
-            return Response([])
-        return Response(serializer.data)
+            return JsonResponse([], status=500, safe=False)
+        return JsonResponse(serialized_data, safe=False)

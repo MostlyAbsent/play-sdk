@@ -3,7 +3,6 @@ from django.test.utils import setup_test_environment
 from django.urls import reverse
 import json
 from .models.employee import Employee
-from .serializers.employee import EmployeeSerializer
 
 class ProgramTestCase(TestCase):
     fixtures = ['data.json']
