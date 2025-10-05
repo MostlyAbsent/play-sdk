@@ -17,7 +17,7 @@ class ProgramSecurityTestCase(TestCase):
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(res.content, [])
+        self.assertEqual(res.content.decode('utf-8'), '[]')
 
     def test_api_reject_secure_property_query_user(self):
         """
@@ -29,7 +29,7 @@ class ProgramSecurityTestCase(TestCase):
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(res.content, [])
+        self.assertEqual(res.content.decode('utf-8'), '[]')
 
     def test_api_reject_traversal_query_user(self):
         """
@@ -42,4 +42,4 @@ class ProgramSecurityTestCase(TestCase):
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(res.content, [])
+        self.assertEqual(res.content.decode('utf-8'), '[]')
