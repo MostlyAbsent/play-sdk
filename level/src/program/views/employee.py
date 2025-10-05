@@ -24,6 +24,24 @@ class EmployeeView(View):
                 {"error": "Bad Request"}, status = 400
             )
 
+        FORBIDDEN_KEYS = {
+            'manager',
+            'user'
+        }
+
+        def filter_fun(key: str) -> bool:
+            for k in FORBIDDEN_KEYS:
+                if k in key:
+                    return False
+            return True
+
+        filtered_req = {}
+        for key, value in request_data.items():
+            if filter_fun(key):
+                filtered_req[key] = value
+            else:
+                return JsonResponse([], status=400, safe=False)
+
         try:
             employees = Employee.objects.filter(**request_data)
             print(f"Queryset count: {employees.count()}")
