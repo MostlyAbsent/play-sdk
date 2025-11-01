@@ -16,6 +16,65 @@ see how it's misuse can expose your data to attackers.
   cross table relations.
 - The API receives and responds using JSON strings.
 
+== Setup
+
+....
+make run
+....
+
+Launches a webserver on [http://localhost:8080/], in your browser
+navigate to [http:localhost:8080/employee] to begin the challenge.
+
+=== Example Payloads 
+
+==== Testing Intended Input
+
+Testing the endpoint with the following POST content.
+
+....
+{ "firstName" : "Robert" }
+....
+
+Or
+
+....
+{ "firstName__contains" : "rob" }
+....
+
+Returns
+....
+[
+    {
+        "firstName": "Robert",
+        "lastName": "Smith"
+    }
+]
+....
+
+==== Testing Malicious Input
+
+....
+{ "manager__user__password__startswith": "p" }
+....
+
+....
+[
+    {
+        "firstName": "Alice",
+        "lastName": "Smith"
+    }
+]
+....
+
+== Hint
+
+
+Internally Django, by default stores a password hash that may look like this: `pbkdf2_sha256$26000...`
+
+The malicious query we provided `manager__user__password__startswith` allows us to match, one character at a time, the stored password hash for the manager for this employee. Traversing along the databases relations `employee -> manager -> user -> password` to fetch secured information. As long as Alice remains in our response set, we know our password guess was correct.
+
+See https://www.elttam.com/blog/plormbing-your-django-orm/ for more details
+
 == Troubleshooting
 
 Ask your question on https://discuss.secdim.com[SecDim Discuss]
