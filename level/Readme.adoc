@@ -29,17 +29,27 @@ navigate to [http:localhost:8080/employee] to begin the challenge.
 
 ==== Testing Intended Input
 
-Testing the endpoint with the following POST content.
+Testing the endpoint with the following values.
 
+Search Filter
 ....
-{ "firstName" : "Robert" }
+firstName
+....
+Search Value
+....
+Robert
 ....
 
 Or
 
+Search Filter
 ....
-{ "firstName__contains" : "rob" }
+firstName__contains
 ....
+Search Value
+....
+rob
+
 
 Returns
 ....
@@ -53,9 +63,19 @@ Returns
 
 ==== Testing Malicious Input
 
+Search Filter
+
 ....
-{ "manager__user__password__startswith": "p" }
+manager__user__password__startswith
 ....
+
+Search Value
+
+....
+p
+....
+
+Returns our manager's details.
 
 ....
 [

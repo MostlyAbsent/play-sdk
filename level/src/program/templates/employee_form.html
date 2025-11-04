@@ -24,8 +24,10 @@
         <p>Enter criteria to search for employees.</p>
 
         <form id="employee-search-form">
-            <label for="request">Request:</label>
-            <input type="text" id="request" name="request">
+            <label for="filter">Search Filter:</label>
+            <input type="text" id="filter" name="filter">
+            <label for="query">Search Query:</label>
+            <input type="text" id="query" name="query">
 
             <button type="submit">Search Employees</button>
         </form>
@@ -40,9 +42,12 @@
         document.getElementById('employee-search-form').addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            const request = document.getElementById('request').value.trim();
+            const filter = document.getElementById('filter').value.trim();
+            const query = document.getElementById('query').value.trim();
+
             const responseOutput = document.getElementById('response-output');
             let payload;
+            const request = `{ "${filter}" : "${query}"}`
 
             try {
                 payload = JSON.parse(request);
@@ -62,7 +67,7 @@
             }
 
             try {
-                const response = await fetch('/employee/', {
+                const response = await fetch('/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
