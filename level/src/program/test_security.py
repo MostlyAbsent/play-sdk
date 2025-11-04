@@ -13,7 +13,7 @@ class ProgramSecurityTestCase(TestCase):
         containing manager references should be rejected
         """
         payload = json.dumps({"manager__firstName__startswith": "A"})
-        res = self.client.post("/employee/",
+        res = self.client.post("",
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 400)
@@ -25,7 +25,7 @@ class ProgramSecurityTestCase(TestCase):
         containing user references should be rejected
         """
         payload = json.dumps({"user__username__startswith": "A"})
-        res = self.client.post("/employee/",
+        res = self.client.post("",
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 400)
@@ -38,7 +38,7 @@ class ProgramSecurityTestCase(TestCase):
         that traverse a database relationship.
         """
         payload = json.dumps({"manager__user__username__startswith": "A"})
-        res = self.client.post("/employee/",
+        res = self.client.post("",
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 400)
