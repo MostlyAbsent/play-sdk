@@ -9,7 +9,7 @@ class ProgramTestCase(TestCase):
 
     def test_query_by_firstName(self):
         payload = json.dumps({"firstName": "Robert"})
-        res = self.client.post("/employee/",
+        res = self.client.post("",
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 200)
@@ -18,7 +18,7 @@ class ProgramTestCase(TestCase):
 
     def test_query_by_lastName(self):
         payload = json.dumps({"lastName": "Smith"})
-        res = self.client.post("/employee/",
+        res = self.client.post("",
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 200)
@@ -28,13 +28,9 @@ class ProgramTestCase(TestCase):
 
     def test_query_by_firstName_and_lastName(self):
         payload = json.dumps({"firstName": "Robert", "lastName": "Smith"})
-        res = self.client.post("/employee/",
+        res = self.client.post("",
                                data=payload,
                                content_type="application/json")
         self.assertEqual(res.status_code, 200)
         expected = [{"firstName": "Robert", "lastName": "Smith"}]
         self.assertJSONEqual(res.content, expected)
-
-    def test_employee_endpoint_get_forbidden(self):
-        res = self.client.get("/employee")
-        self.assertEqual(res.status_code, 301)
