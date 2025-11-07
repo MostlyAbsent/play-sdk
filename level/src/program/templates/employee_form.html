@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="en" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Search API</title>
     <style>
@@ -21,7 +19,39 @@
 <body>
     <div class="container">
         <h1>Employee Search API</h1>
-        <p>Enter criteria to search for employees.</p>
+        <p>This API provides a search service. It's developers intend to allow searching by first name, or by last name, or both. And to allow any of Django's Filed Lookup operators to be used with the employee's name. See <a href="https://docs.djangoproject.com/en/5.2/ref/models/querysets/#field-lookups">Field Lookup operators</a> for a full list.</p>
+
+        <div style="margin-bottom: 20px;overflow: auto;">
+            <h2 style="float: left;">To get started try</h2>
+            <button id="shexample" style="float: right;margin-top:20px;margin-right:5px;" type="button">Hide</button>
+        </div>
+        <div id="example" style="display: block;">
+            <p>Search Filter:</p>
+            <p style="font-family: 'Courier New', monospace;">firstName</p>
+            <p>Search Query:</p>
+            <p style="font-family: 'Courier New', monospace;">Robert</p>
+            <h3>or</h3>
+            <p>Search Filter:</p>
+            <p style="font-family: 'Courier New', monospace;">lastName__startswith</p>
+            <p>Search Query:</p>
+            <p style="font-family: 'Courier New', monospace;">Sm</p>
+        </div>
+
+        <hr>
+
+        <div style="margin-bottom: 20px;overflow: auto;">
+            <h2 style="float: left;">To see the security flaw try</h2>
+            <button id="shattack" style="float: right;margin-top:20px;margin-right:5px;" type="button">Show</button>
+        </div>
+        <div id="attack" style="display: none;">
+            <p>Search Filter:</p>
+            <p style="font-family: 'Courier New', monospace;">manager__user__password__startswith</p>
+            <p>Search Query: </p>
+            <p style="font-family: 'Courier New', monospace;">p</p>
+            <p>This lets you see, and slowly derrive, the manager's password hash.</p>
+        </div>
+
+        <hr>
 
         <form id="employee-search-form">
             <label for="filter">Search Filter:</label>
@@ -39,8 +69,8 @@
     </div>
 
     <script>
-        document.getElementById('employee-search-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
+     document.getElementById('employee-search-form').addEventListener('submit', async function(event) {
+         event.preventDefault();
 
             const filter = document.getElementById('filter').value.trim();
             const query = document.getElementById('query').value.trim();
@@ -81,6 +111,13 @@
                 if (response.ok) {
                     responseOutput.textContent = JSON.stringify(data, null, 2);
                     responseOutput.classList.remove('error');
+                } else if (response.status == 422) {
+                    const detail = data.details
+                    responseOutput.innerHTML =
+                        `${detail}\n\n
+Search Filter must be a valid Django ORM Field Lookup.
+See <a href="https://docs.djangoproject.com/en/5.2/topics/db/queries/#field-lookups">Field Lookups</a> for more information.`;
+                    responseOutput.classList.add('error');
                 } else {
                     responseOutput.textContent = `Error ${response.status}: ${JSON.stringify(data, null, 2)}`;
                     responseOutput.classList.add('error');
@@ -108,6 +145,32 @@
             }
             return cookieValue;
         }
+
+     document.getElementById('shexample')
+             .addEventListener('click', async function(event) {
+                 const examples = document.getElementById('example');
+
+                 if (examples.style.display === 'block') {
+                     examples.style.display = 'none';
+                     this.textContent = 'Show';
+                 } else {
+                     examples.style.display = 'block';
+                     this.textContent = 'Hide';
+                 }
+     })
+
+     document.getElementById('shattack')
+             .addEventListener('click', async function(event) {
+                 const attack = document.getElementById('attack');
+
+                 if (attack.style.display === 'block') {
+                     attack.style.display = 'none';
+                     this.textContent = 'Show';
+                 } else {
+                     attack.style.display = 'block';
+                     this.textContent = 'Hide';
+                 }
+     })
     </script>
 </body>
 </html>
