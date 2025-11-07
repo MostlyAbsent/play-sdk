@@ -86,6 +86,10 @@ Returns our manager's details.
 ]
 ....
 
+==== Reference
+
+Search Filters must be valid Django ORM Field Lookups, see https://docs.djangoproject.com/en/5.2/topics/db/queries/#field-lookups for details.
+
 == Hint
 
 

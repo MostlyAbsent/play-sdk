@@ -47,8 +47,11 @@ class EmployeeView(View):
             print(f"Queryset count: {employees.count()}")
             serialized_data =[employee.to_dict() for employee in employees]
         except Exception as e:
-            print(e)
-            return JsonResponse([], status=500, safe=False)
+            return JsonResponse(
+                {"error": "Bad request",
+                 "details": e.args},
+                 status=422,
+                 safe=False)
         return JsonResponse(serialized_data, safe=False)
 
     def get(self, request: HttpRequest, *args, **kwargs):
